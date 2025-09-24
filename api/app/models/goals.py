@@ -12,8 +12,8 @@ from .base import BaseModelWithTimestamps, Priority, Status, RecurrencePattern, 
 class GoalCreate(BaseModel):
     """Crear meta."""
     name: str = Field(..., min_length=1, max_length=100)
-    target_amount: str = Field(..., regex=r"^\d+(\.\d{1,2})?$")
-    current_amount: str = Field("0", regex=r"^\d+(\.\d{1,2})?$")
+    target_amount: str = Field(..., pattern=r"^\d+(\.\d{1,2})?$")
+    current_amount: str = Field("0", pattern=r"^\d+(\.\d{1,2})?$")
     target_date: Optional[date] = None
     description: Optional[str] = Field(None, max_length=500)
     priority: Priority = Priority.MEDIUM
@@ -24,8 +24,8 @@ class GoalCreate(BaseModel):
 class GoalUpdate(BaseModel):
     """Actualizar meta."""
     name: Optional[str] = Field(None, min_length=1, max_length=100)
-    target_amount: Optional[str] = Field(None, regex=r"^\d+(\.\d{1,2})?$")
-    current_amount: Optional[str] = Field(None, regex=r"^\d+(\.\d{1,2})?$")
+    target_amount: Optional[str] = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
+    current_amount: Optional[str] = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
     target_date: Optional[date] = None
     description: Optional[str] = Field(None, max_length=500)
     priority: Optional[Priority] = None
@@ -60,7 +60,7 @@ class GoalListResponse(PaginatedResponse):
 
 class GoalContributionCreate(BaseModel):
     """Crear aporte a meta."""
-    amount: str = Field(..., regex=r"^\d+(\.\d{1,2})?$")
+    amount: str = Field(..., pattern=r"^\d+(\.\d{1,2})?$")
     source_account_id: UUID
     occurred_at: Optional[datetime] = None
     description: Optional[str] = Field(None, max_length=500)

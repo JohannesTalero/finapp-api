@@ -2,7 +2,7 @@
 
 from typing import Optional
 from uuid import UUID
-from fastapi import Depends, Query, HTTPException, status
+from fastapi import Depends, Query, Path, HTTPException, status
 
 from .core.security import User, get_current_user, require_role
 from .core.errors import AuthorizationError, NotFoundError
@@ -21,7 +21,7 @@ async def get_pagination_params(
 
 
 async def get_household_id(
-    household_id: UUID = Query(..., description="ID del hogar")
+    household_id: UUID = Path(..., description="ID del hogar")
 ) -> UUID:
     """Extrae el household_id del path."""
     return household_id

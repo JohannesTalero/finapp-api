@@ -12,7 +12,7 @@ from .base import BaseModelWithTimestamps, TransactionKind, PaginationParams, Pa
 class TransactionCreate(BaseModel):
     """Crear transacción."""
     kind: TransactionKind
-    amount: str = Field(..., regex=r"^\d+(\.\d{1,2})?$")
+    amount: str = Field(..., pattern=r"^\d+(\.\d{1,2})?$")
     account_id: Optional[UUID] = None
     from_account_id: Optional[UUID] = None
     to_account_id: Optional[UUID] = None
@@ -40,7 +40,7 @@ class TransactionCreate(BaseModel):
 
 class TransactionUpdate(BaseModel):
     """Actualizar transacción."""
-    amount: Optional[str] = Field(None, regex=r"^\d+(\.\d{1,2})?$")
+    amount: Optional[str] = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
     category_id: Optional[UUID] = None
     occurred_at: Optional[datetime] = None
     description: Optional[str] = Field(None, max_length=500)
@@ -71,7 +71,7 @@ class TransactionListParams(PaginationParams):
     account_id: Optional[UUID] = None
     search: Optional[str] = Field(None, max_length=100)
     sort: str = Field(default="occurred_at")
-    order: str = Field(default="desc", regex=r"^(asc|desc)$")
+    order: str = Field(default="desc", pattern=r"^(asc|desc)$")
 
 
 class TransactionListResponse(PaginatedResponse):

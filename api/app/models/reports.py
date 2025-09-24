@@ -29,7 +29,7 @@ class CashflowParams(BaseModel):
     """Parámetros para cashflow."""
     from_date: date
     to_date: date
-    group_by: str = Field(default="month", regex=r"^(day|week|month|year)$")
+    group_by: str = Field(default="month", pattern=r"^(day|week|month|year)$")
 
 
 class CashflowItemResponse(BaseModel):

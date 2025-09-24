@@ -13,7 +13,7 @@ class CategoryCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     kind: TransactionKind
     description: Optional[str] = Field(None, max_length=500)
-    color: Optional[str] = Field(None, regex=r"^#[0-9A-Fa-f]{6}$")
+    color: Optional[str] = Field(None, pattern=r"^#[0-9A-Fa-f]{6}$")
     icon: Optional[str] = Field(None, max_length=50)
 
 
@@ -21,7 +21,7 @@ class CategoryUpdate(BaseModel):
     """Actualizar categoría."""
     name: Optional[str] = Field(None, min_length=1, max_length=100)
     description: Optional[str] = Field(None, max_length=500)
-    color: Optional[str] = Field(None, regex=r"^#[0-9A-Fa-f]{6}$")
+    color: Optional[str] = Field(None, pattern=r"^#[0-9A-Fa-f]{6}$")
     icon: Optional[str] = Field(None, max_length=50)
 
 
@@ -41,9 +41,9 @@ class AccountCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     account_type: AccountType
     currency: str = Field(..., min_length=3, max_length=3)
-    initial_balance: Optional[str] = Field("0", regex=r"^-?\d+(\.\d{1,2})?$")
+    initial_balance: Optional[str] = Field("0", pattern=r"^-?\d+(\.\d{1,2})?$")
     description: Optional[str] = Field(None, max_length=500)
-    color: Optional[str] = Field(None, regex=r"^#[0-9A-Fa-f]{6}$")
+    color: Optional[str] = Field(None, pattern=r"^#[0-9A-Fa-f]{6}$")
     icon: Optional[str] = Field(None, max_length=50)
 
 
@@ -51,7 +51,7 @@ class AccountUpdate(BaseModel):
     """Actualizar cuenta."""
     name: Optional[str] = Field(None, min_length=1, max_length=100)
     description: Optional[str] = Field(None, max_length=500)
-    color: Optional[str] = Field(None, regex=r"^#[0-9A-Fa-f]{6}$")
+    color: Optional[str] = Field(None, pattern=r"^#[0-9A-Fa-f]{6}$")
     icon: Optional[str] = Field(None, max_length=50)
 
 

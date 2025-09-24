@@ -1,6 +1,6 @@
 """Repositorio para gestión de metas."""
 
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Tuple
 from uuid import UUID
 from datetime import datetime, date
 from decimal import Decimal

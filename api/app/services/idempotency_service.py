@@ -7,7 +7,7 @@ from uuid import UUID
 
 from ..core.logging import get_logger
 from ..core.errors import IdempotencyError, ConflictError
-from ..db.supabase_client import supabase_client
+from ..db.supabase_client import Supa
 
 logger = get_logger(__name__)
 
@@ -16,7 +16,8 @@ class IdempotencyService:
     """Servicio para manejar idempotencia de requests."""
     
     def __init__(self):
-        self.client = supabase_client.service_client
+        # No inicializar cliente en import; se resolverá en runtime
+        self._client = None
     
     def _hash_request_body(self, body: Dict[str, Any]) -> str:
         """Genera hash del cuerpo del request."""
@@ -41,7 +42,9 @@ class IdempotencyService:
         
         try:
             # Buscar request previo
-            result = self.client.table("idempotency_requests").select("*").eq(
+            client = self._client or Supa.get_service_client()
+            self._client = client
+            result = client.table("idempotency_requests").select("*").eq(
                 "key", key
             ).eq("user_id", str(user_id)).eq("household_id", str(household_id)).execute()
             
@@ -107,7 +110,9 @@ class IdempotencyService:
         }
         
         try:
-            self.client.table("idempotency_requests").insert(data).execute()
+            client = self._client or Supa.get_service_client()
+            self._client = client
+            client.table("idempotency_requests").insert(data).execute()
             
             logger.info(
                 "Idempotency result stored",
@@ -130,7 +135,9 @@ class IdempotencyService:
     async def cleanup_old_requests(self, days: int = 30) -> int:
         """Limpia requests idempotentes antiguos."""
         try:
-            result = self.client.table("idempotency_requests").delete().lt(
+            client = self._client or Supa.get_service_client()
+            self._client = client
+            result = client.table("idempotency_requests").delete().lt(
                 "created_at", f"now() - interval '{days} days'"
             ).execute()
             
@@ -149,5 +156,5 @@ class IdempotencyService:
             raise
 
 
-# Instancia global del servicio
+# Instancia perezosa compatible con imports existentes; no abre conexión en import
 idempotency_service = IdempotencyService()

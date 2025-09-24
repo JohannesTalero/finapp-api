@@ -12,8 +12,8 @@ from .base import BaseModelWithTimestamps, Priority, Status, RecurrencePattern, 
 class ObligationCreate(BaseModel):
     """Crear obligación."""
     name: str = Field(..., min_length=1, max_length=100)
-    total_amount: str = Field(..., regex=r"^\d+(\.\d{1,2})?$")
-    outstanding_amount: str = Field(..., regex=r"^\d+(\.\d{1,2})?$")
+    total_amount: str = Field(..., pattern=r"^\d+(\.\d{1,2})?$")
+    outstanding_amount: str = Field(..., pattern=r"^\d+(\.\d{1,2})?$")
     due_date: Optional[date] = None
     description: Optional[str] = Field(None, max_length=500)
     priority: Priority = Priority.MEDIUM
@@ -25,8 +25,8 @@ class ObligationCreate(BaseModel):
 class ObligationUpdate(BaseModel):
     """Actualizar obligación."""
     name: Optional[str] = Field(None, min_length=1, max_length=100)
-    total_amount: Optional[str] = Field(None, regex=r"^\d+(\.\d{1,2})?$")
-    outstanding_amount: Optional[str] = Field(None, regex=r"^\d+(\.\d{1,2})?$")
+    total_amount: Optional[str] = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
+    outstanding_amount: Optional[str] = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
     due_date: Optional[date] = None
     description: Optional[str] = Field(None, max_length=500)
     priority: Optional[Priority] = None
@@ -65,7 +65,7 @@ class ObligationListResponse(PaginatedResponse):
 
 class ObligationPaymentCreate(BaseModel):
     """Crear pago de obligación."""
-    amount: str = Field(..., regex=r"^\d+(\.\d{1,2})?$")
+    amount: str = Field(..., pattern=r"^\d+(\.\d{1,2})?$")
     from_account_id: UUID
     occurred_at: Optional[datetime] = None
     description: Optional[str] = Field(None, max_length=500)
